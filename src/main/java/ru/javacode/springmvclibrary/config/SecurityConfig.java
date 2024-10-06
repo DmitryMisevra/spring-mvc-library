@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/authors/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/authors/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
-                .httpBasic(withDefaults());  // Включаем Basic Authentication// Отключаем сессии
+                .httpBasic(withDefaults());
         return http.build();
     }
 
