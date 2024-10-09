@@ -27,7 +27,7 @@ import ru.javacode.springmvclibrary.author.model.Author;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id", nullable = false)
     private Long bookId;
     @Column(name = "book_name", nullable = false)

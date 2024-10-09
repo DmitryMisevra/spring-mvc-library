@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: spring-mvc-library
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23liMWkqROJ9EVdwbz
+            client-secret: 8a3350a7d04ee6d839558395d1ba8f6a7f60089f
+            scope: read:user, user:email
+            redirect-uri: "http://localhost:8080/login/oauth2/code/github"
+            client-name: GitHub
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: email
+
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.boot: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE

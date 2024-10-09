@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,22 +31,26 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping(path = "/{bookId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<BookDto> getBookById(@PathVariable @Min(1) Long bookId) {
         return ResponseEntity.ok(bookService.getBookById(bookId));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookDto> createBook(@Valid @RequestBody CreateBookDto createBookDto) {
         return new ResponseEntity<>(bookService.createBook(createBookDto), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookDto> updateBook(@PathVariable @Min(1) Long bookId,
                                               @Valid @RequestBody UpdateBookDto updateBookDto) {
         return ResponseEntity.ok(bookService.updateBook(bookId, updateBookDto));
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(defaultValue = "0") @Min(0) Integer offset,
                                                      @RequestParam(defaultValue = "20") Integer limit,
                                                      @RequestParam(defaultValue = "bookName,asc") String[] sort) {
@@ -53,6 +58,7 @@ public class BookController {
     }
 
     @DeleteMapping(path = "/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable @Min(1) Long bookId) {
         bookService.deleteBook(bookId);
         return ResponseEntity.noContent().build();

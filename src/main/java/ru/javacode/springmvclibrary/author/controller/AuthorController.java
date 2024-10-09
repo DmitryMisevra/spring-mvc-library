@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,31 +29,34 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-
     @GetMapping(path = "/{authorId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable @Min(1) Long authorId) {
         return ResponseEntity.ok(authorService.getAuthorById(authorId));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AuthorDto> createAuthor(@Valid @RequestBody CreatedAuthorDto createdAuthorDto) {
         return new ResponseEntity<>(authorService.createAuthor(createdAuthorDto), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{authorId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AuthorDto> updateAuthor(@PathVariable @Min(1) Long authorId,
                                                   @Valid @RequestBody UpdatedAuthorDto updatedAuthorDto) {
         return ResponseEntity.ok(authorService.updateAuthor(authorId, updatedAuthorDto));
     }
 
     @DeleteMapping(path = "/{authorId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAuthor(@PathVariable @Min(1) Long authorId) {
         authorService.deleteAuthor(authorId);
         return ResponseEntity.noContent().build();
-
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<AuthorDto>> getAllAuthors() {
         return ResponseEntity.ok(authorService.getAllAuthors());
     }

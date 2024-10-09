@@ -1,2 +1,2 @@
-ALTER TABLE books
-DROP CONSTRAINT IF EXISTS FK_BOOKS_ON_AUTHOR;
+INSERT INTO users (user_name, user_email, role)
+VALUES ('Dmitry Misevra', 'dmitri.misevra@gmail.com', 'ROLE_ADMIN');
